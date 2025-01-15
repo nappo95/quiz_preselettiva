@@ -11,7 +11,7 @@ class DBClient:
 
     def get_quiz_questions(self, table, number_of_questions=15):
         """
-        Selects 15 random questions that haven't been used yet (used=0),
+        Selects N random questions that haven't been used yet (used=0),
         marks them as used, and returns them.
         """
         cursor = self.conn.cursor()\
@@ -49,3 +49,14 @@ class DBClient:
         cursor.close()
 
         return quiz_questions
+    
+    def mark_completed_question(self, ids, table):
+        cursor = self.conn.cursor()
+        update_query = f"""
+        UPDATE {table}
+        SET used = TRUE
+        WHERE numer_quesito IN ({",".join(str(i) for i in ids)});
+        """
+        cursor.execute(update_query)
+        self.conn.commit()
+        cursor.close()

@@ -1,16 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from question_manager import QuestionManager
+from typing import List
+from models.questions import Question
 
 app = Flask(__name__)
 app.secret_key = 'replace_this_with_a_secret_key'  # Needed for session
 
 qm = QuestionManager()
 
-questions = qm.get_questions()
-
 session = {}
 
-questions = []
+questions: List[Question] = []
 
 @app.route('/')
 def home():
@@ -88,11 +88,14 @@ def result():
     """
     user_answers = session.get('user_answers', [])
     score = 0
+    right_question = []
 
     for i, answer_index in enumerate(user_answers):
-        if answer_index is not None and answer_index == questions[i]['answer_index']:
+        if answer_index is not None and answer_index == questions[i].answer_index:
+            right_question.append(questions[i])
             score += 1
-
+    
+    qm.mark_completed_questions(right_question)
     return render_template('result.html', score=score, total=len(questions))
 
 
