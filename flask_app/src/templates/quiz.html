@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Question {{ q_index + 1 }} of {{ total_questions }}</h2>
+<p>{{ question_data.question }}</p>
+
+<form method="POST">
+  {% for option in question_data.options %}
+    {% set opt_index = loop.index0 %}
+
+    <div class="option-container">
+      <input
+        type="radio"
+        id="option_{{ opt_index }}"
+        name="option"
+        value="{{ opt_index }}"
+        {% if user_answer == opt_index %}checked{% endif %}
+      />
+
+      <label
+        for="option_{{ opt_index }}"
+        
+        {# Highlight logic: if user_answer is not None, and we are rendering answers #}
+        {% if user_answer is not none %}
+          {% if opt_index == question_data.answer_index %}
+            style="color: green; font-weight: bold;"
+          {% elif user_answer == opt_index %}
+            style="color: red;"
+          {% endif %}
+        {% endif %}
+      >
+        {{ option }}
+      </label>
+    </div>
+    
+  {% endfor %}
+
+  <button type="submit">Submit Answer</button>
+</form>
+
+<div class="nav-buttons">
+  <!-- Back Button (goes to /back/<q_index>) -->
+  {% if q_index > 0 %}
+    <a href="{{ url_for('back_question', q_index=q_index) }}">Back</a>
+  {% endif %}
+
+  <!-- Next Button (goes to /next/<q_index>) -->
+  <!-- You could disable it if user hasn't answered, or always allow. -->
+  <a href="{{ url_for('next_question', q_index=q_index) }}">Next</a>
+</div>
+
+{% endblock %}

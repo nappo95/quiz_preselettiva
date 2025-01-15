@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.0
+    networks:
+      - network1
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+    volumes:
+      - ./mysql:/var/lib/mysql
+  application: 
+    build: ./flask_app
+    networks:
+      - network1
+    # command: sleep 3600
+    ports:
+      - "5555:5000"
+    depends_on:
+      - mysql
+networks:
+  network1:
