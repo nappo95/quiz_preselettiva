@@ -5,7 +5,7 @@ from models.questions import Question
 class QuestionManager:
     def __init__(self):
         self.__db_client = DBClient()
-        self.__topics = ['diritto_civile']#,'diritto_commerciale', 'diritto_procedura_civile', 'diritto_tributario']
+        self.__topics = ['diritto_civile','diritto_commerciale', 'diritto_procedura_civile', 'diritto_tributario']
         self.__number_of_question_per_topic = 15
 
     def get_questions(self):
