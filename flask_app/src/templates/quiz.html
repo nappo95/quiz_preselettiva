@@ -2,7 +2,7 @@
 {% block content %}
 
 <h2>Question {{ q_index + 1 }} of {{ total_questions }}</h2>
-<p>{{ question_data.question }}</p>
+<p>[{{ question_data.id}}] {{ question_data.question }}</p>
 
 <form method="POST">
   {% for option in question_data.options %}
