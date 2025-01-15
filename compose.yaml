@@ -2,7 +2,7 @@ services:
   mysql:
     image: mysql:8.0
     networks:
-      - network1
+      - quesiti_preselettiva
     ports:
       - "3306:3306"
     environment:
@@ -13,11 +13,11 @@ services:
   application: 
     build: ./flask_app
     networks:
-      - network1
+      - quesiti_preselettiva
     # command: sleep 3600
     ports:
       - "5555:5000"
     depends_on:
       - mysql
 networks:
-  network1:
+  quesiti_preselettiva:
